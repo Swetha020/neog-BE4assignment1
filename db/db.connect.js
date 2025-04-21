@@ -14,4 +14,13 @@ const initializeDatabase = () =>{
     })
 }
 
+const readBookByTitle = async (bookTitle) =>{
+    try {
+        const book = await Book.findOne({title:bookTitle})
+    return book
+    } catch (error) {
+        console.log("An error occured",error)
+    }
+}
+
 module.exports={initializeDatabase}
