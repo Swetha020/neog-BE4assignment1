@@ -9,7 +9,7 @@ const initializeDatabase = () =>{
     .then(()=>{
         console.log("Connected to database successfully")
     })
-    .catch(()=>{
+    .catch((error)=>{
         console.log("An error occured while connecting to database",error)
     })
 }
