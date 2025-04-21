@@ -135,6 +135,72 @@ app.get("/books/release/:year",async(req,res)=>{
     }
 })
 
+const updateBookById = async(bookId,updateData) =>{
+    try {
+        const updatedBook = await Book.findByIdAndUpdate(bookId,updateData,{new:true})
+        return updatedBook
+    } catch (error) {
+        console.log("An error occured",error)
+    }
+}
+
+app.post("/books/:bookId",async (req,res)=>{
+    try {
+        const updatedBook = await updateBookById(req.params.bookId,req.body)
+        if(updatedBook){
+            res.status(200).json({message: "Book successfully updated",book:updatedBook})
+        }else{
+            res.status(404).json({error:"Book not found"}) 
+        }
+    } catch (error) {
+        res.status(500).json({error:"Failed to update data"})
+    }
+})
+
+
+const updateBookByTitle = async(bookTitle,updateData) =>{
+    try {
+        const updatedBook = await Book.findOneAndUpdate({title:bookTitle},updateData,{new:true})
+        return updatedBook
+    } catch (error) {
+        console.log("An error occured",error)
+    }
+}
+
+app.post("/books/update/:bookTitle",async (req,res)=>{
+    try {
+        const updatedBook = await updateBookByTitle(req.params.bookTitle,req.body)
+        if(updatedBook){
+            res.status(200).json({message: "Book successfully updated",book:updatedBook})
+        }else{
+            res.status(404).json({error:"Book does not exist"}) 
+        }
+    } catch (error) {
+        res.status(500).json({error:"Failed to update data"})
+    }
+})
+
+const deleteBookById = async(bookId) =>{
+    try {
+        const deletedBook = await Book.findByIdAndDelete(bookId)
+        return deletedBook
+    } catch (error) {
+        console.log("An error occured",error)
+    }
+}
+
+app.delete("/books/:bookId",async(req,res)=>{
+    try {
+        const deletedBook = await deleteBookById(req.params.bookId)
+        if(deletedBook){
+            res.status(200).json({message: "Book successfully deleted"})
+        }else{
+            res.status(404).json({error:"Book does not exist"}) 
+        }
+    } catch (error) {
+        res.status(500).json({error:"Failed to delete data"})
+    }
+})
 
 PORT = process.env.PORT
 app.listen(PORT, () =>{
